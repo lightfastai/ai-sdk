@@ -1,4 +1,10 @@
-# @lightfastai/core
+# @lightfastai/ai-sdk
+
+## 0.3.0
+
+### Minor Changes
+
+- Extract `@lightfastai/ai-sdk` into its own repository ([github.com/lightfastai/ai-sdk](https://github.com/lightfastai/ai-sdk)). No public API changes — this is a packaging/governance milestone. Future development happens at the standalone repo.
 
 ## 0.2.1
 
