@@ -1,6 +1,16 @@
-# Lightfast Core
+# @lightfastai/ai-sdk
 
 Production-ready AI agent framework with built-in observability, caching, and type safety.
+
+[![npm version](https://img.shields.io/npm/v/@lightfastai/ai-sdk.svg)](https://www.npmjs.com/package/@lightfastai/ai-sdk)
+[![License](https://img.shields.io/npm/l/@lightfastai/ai-sdk.svg)](./LICENSE)
+[![Node](https://img.shields.io/node/v/@lightfastai/ai-sdk.svg)](./package.json)
+
+- **Source**: [github.com/lightfastai/ai-sdk](https://github.com/lightfastai/ai-sdk)
+- **Issues**: [github.com/lightfastai/ai-sdk/issues](https://github.com/lightfastai/ai-sdk/issues)
+- **Changelog**: [CHANGELOG.md](./CHANGELOG.md)
+
+ESM-only. Requires Node ≥ 18.
 
 ## Installation
 
@@ -89,14 +99,12 @@ import { RedisMemory } from '@lightfastai/ai-sdk/memory/adapters/redis';
 import { AnthropicProviderCache, ClineConversationStrategy } from '@lightfastai/ai-sdk/cache';
 import { smoothStream, stepCountIs, wrapLanguageModel } from 'ai';
 import { BraintrustMiddleware, initLogger, traced } from 'braintrust';
-import { getBraintrustConfig, isOtelEnabled } from '@lightfastai/ai-sdk/v2/braintrust-env';
-import { uuidv4 } from '@lightfastai/ai-sdk/v2/utils';
+import { randomUUID } from 'node:crypto';
 
 // Initialize observability
-const braintrustConfig = getBraintrustConfig();
 initLogger({
-  apiKey: braintrustConfig.apiKey,
-  projectName: braintrustConfig.projectName || 'my-app',
+  apiKey: process.env.BRAINTRUST_API_KEY,
+  projectName: process.env.BRAINTRUST_PROJECT_NAME || 'my-app',
 });
 
 // Define your tools
@@ -164,7 +172,7 @@ export async function POST(req: Request) {
           
           // OpenTelemetry configuration
           experimental_telemetry: {
-            isEnabled: isOtelEnabled(),
+            isEnabled: !!process.env.OTEL_EXPORTER_OTLP_HEADERS,
             metadata: {
               agentId,
               sessionId,
@@ -197,7 +205,7 @@ export async function POST(req: Request) {
         memory,
         req,
         resourceId: 'user-id',
-        generateId: uuidv4,
+        generateId: randomUUID,
         enableResume: true, // Enable stream resumption
       });
     },
@@ -327,7 +335,7 @@ Enable clients to resume interrupted streams:
 fetchRequestHandler({
   // ... other config
   enableResume: true,
-  generateId: uuidv4, // Consistent ID generation
+  generateId: randomUUID, // Consistent ID generation (from `node:crypto`)
 });
 ```
 
@@ -441,6 +449,10 @@ Handles HTTP requests for agent streaming.
 9. **Monitor token usage** through the onFinish handler
 10. **Test tools thoroughly** with comprehensive input validation
 
+## Contributing
+
+Issues and pull requests are welcome at [github.com/lightfastai/ai-sdk](https://github.com/lightfastai/ai-sdk). Releases are cut via [changesets](https://github.com/changesets/changesets) — open a PR with a `pnpm changeset` entry describing the change.
+
 ## License
 
-MIT
+MIT — see [LICENSE](./LICENSE).
