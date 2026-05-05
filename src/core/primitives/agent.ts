@@ -1,4 +1,3 @@
-import { parseError } from "@vendor/observability/error/next";
 import type {
   LanguageModel,
   ModelMessage,
@@ -27,6 +26,15 @@ import {
 } from "../server/errors";
 import type { ProviderCache } from "./cache";
 import type { ToolFactorySet } from "./tool";
+
+const parseError = (error: unknown): string => {
+  if (error instanceof Error) return error.message;
+  if (error && typeof error === "object" && "message" in error) {
+    return (error as { message: string }).message;
+  }
+  if (typeof error === "string") return error;
+  return String(error);
+};
 
 // Extract the base streamText parameters type
 type StreamTextParams = Parameters<typeof streamText>[0];

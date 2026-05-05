@@ -34,7 +34,6 @@ export default defineConfig({
   // External dependencies - don't bundle
   external: [
     "@upstash/redis",
-    "@vendor/observability",
     "ai",
     "resumable-stream",
     "uuid",

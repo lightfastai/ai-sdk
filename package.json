@@ -1,6 +1,6 @@
 {
   "name": "@lightfastai/ai-sdk",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "AI agents, tools, and workflows for Lightfast",
   "keywords": [
     "ai",
@@ -11,16 +11,22 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/lightfastai/lightfast.git",
-    "directory": "core/ai-sdk"
+    "url": "https://github.com/lightfastai/ai-sdk.git"
   },
   "homepage": "https://lightfast.ai",
-  "bugs": "https://github.com/lightfastai/lightfast/issues",
+  "bugs": "https://github.com/lightfastai/ai-sdk/issues",
   "license": "MIT",
   "author": "Lightfast <hello@lightfast.ai>",
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "tag": "latest",
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -74,22 +80,20 @@
   },
   "dependencies": {
     "@upstash/redis": "^1.37.0",
-    "@vendor/observability": "workspace:*",
     "ai": "5.0.52",
     "redis": "^4.7.0",
     "resumable-stream": "^2.2.12",
     "uuid": "^14.0.0",
-    "zod": "catalog:"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
-    "@repo/vitest-config": "workspace:*",
-    "@types/node": "catalog:",
+    "@changesets/cli": "^2.31.0",
+    "@types/node": "^24.9.1",
     "@types/uuid": "^11.0.0",
     "@vitest/coverage-v8": "^4.1.4",
     "@vitest/ui": "^4.1.4",
     "tsup": "^8.5.1",
-    "typescript": "catalog:",
+    "typescript": "^5.9.2",
     "vitest": "^4.1.4"
   },
   "engines": {

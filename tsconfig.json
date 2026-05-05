@@ -1,7 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "@repo/typescript-config/compiled-package.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "outDir": "./dist",
     "types": ["node"],
     "lib": ["ES2022", "dom", "dom.iterable"]
   },
