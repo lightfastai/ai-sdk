@@ -1,6 +1,6 @@
 {
   "name": "@lightfastai/ai-sdk",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "AI agents, tools, and workflows for Lightfast",
   "keywords": [
     "ai",

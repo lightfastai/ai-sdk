@@ -1,5 +1,11 @@
 # @lightfastai/ai-sdk
 
+## 0.3.1
+
+### Patch Changes
+
+- Documentation only. Refresh the README so the npm package page matches the current standalone repo: retitle to `@lightfastai/ai-sdk`, add npm/license/Node badges, link to source/issues/changelog, and remove broken `@lightfastai/ai-sdk/v2/braintrust-env` and `/v2/utils` imports from the production example (those subpaths only existed in the previous monorepo and would throw `ERR_PACKAGE_PATH_NOT_EXPORTED` when copy-pasted). No code changes.
+
 ## 0.3.0
 
 ### Minor Changes
