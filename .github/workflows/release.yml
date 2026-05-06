@@ -50,3 +50,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.LIGHTFAST_RELEASE_BOT_GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.LIGHTFAST_RELEASE_BOT_NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+
+      - name: Verify published version matches source
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          sleep 10
+          NPM_VERSION=$(npm view @lightfastai/ai-sdk version)
+          SRC_VERSION=$(node -p "require('./package.json').version")
+          echo "npm=$NPM_VERSION src=$SRC_VERSION"
+          if [ "$NPM_VERSION" != "$SRC_VERSION" ]; then
+            echo "::error::Published npm version ($NPM_VERSION) does not match source ($SRC_VERSION)"
+            exit 1
+          fi
+          echo "✅ @lightfastai/ai-sdk@$NPM_VERSION published"
