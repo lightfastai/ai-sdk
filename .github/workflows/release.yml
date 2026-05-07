@@ -22,7 +22,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.LIGHTFAST_RELEASE_BOT_GITHUB_TOKEN }}
 
       - uses: pnpm/action-setup@v4
 
@@ -47,6 +46,23 @@ jobs:
           publish: pnpm changeset publish
           setupGitUser: false
         env:
-          GITHUB_TOKEN: ${{ secrets.LIGHTFAST_RELEASE_BOT_GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.LIGHTFAST_RELEASE_BOT_NPM_TOKEN }}
+          # Default GITHUB_TOKEN works for opening the Version Packages PR
+          # and pushing commits within this repo. Caveat: bot-pushed commits
+          # do not auto-trigger CI runs — re-trigger via gh workflow run if
+          # needed.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+
+      - name: Verify published version matches source
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          sleep 10
+          NPM_VERSION=$(npm view @lightfastai/ai-sdk version)
+          SRC_VERSION=$(node -p "require('./package.json').version")
+          echo "npm=$NPM_VERSION src=$SRC_VERSION"
+          if [ "$NPM_VERSION" != "$SRC_VERSION" ]; then
+            echo "::error::Published npm version ($NPM_VERSION) does not match source ($SRC_VERSION)"
+            exit 1
+          fi
+          echo "✅ @lightfastai/ai-sdk@$NPM_VERSION published"
